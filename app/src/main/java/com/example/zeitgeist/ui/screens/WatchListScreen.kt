@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -26,12 +25,11 @@ import com.example.zeitgeist.ui.theme.ZeitgeistTheme
 
 @Composable
 fun WatchListScreen(
+    modifier: Modifier = Modifier,
     watches: List<Watch>,
     showAddDialog: Boolean,
     onAddClick: () -> Unit,
-    onDismissDialog: () -> Unit,
-    onConfirmAdd: (Watch) -> Unit,
-    modifier: Modifier = Modifier
+    onDismissDialog: () -> Unit
 ) {
     Scaffold(
         bottomBar = {
@@ -66,13 +64,9 @@ fun WatchListScreen(
     }
 
     if (showAddDialog) {
-        AlertDialog(
-            onDismissRequest = onDismissDialog,
-            title = { Text("Add Watch") },
-            text = { Text("Fields") },
-            confirmButton = {},
-            dismissButton = {}
-        )
+        AddWatchDialog(
+            onDismissDialog = onDismissDialog
+        ) { }
     }
 }
 
@@ -84,8 +78,7 @@ fun WatchListPreviewNoAddDialog() {
             watches = emptyList(),
             showAddDialog = false,
             onAddClick = {},
-            onDismissDialog = {},
-            onConfirmAdd = {}
+            onDismissDialog = {}
         )
     }
 }
@@ -98,8 +91,7 @@ fun WatchListPreviewShowAddDialog() {
             watches = emptyList(),
             showAddDialog = true,
             onAddClick = {},
-            onDismissDialog = {},
-            onConfirmAdd = {}
+            onDismissDialog = {}
         )
     }
 }

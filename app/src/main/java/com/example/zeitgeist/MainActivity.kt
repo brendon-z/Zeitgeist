@@ -12,6 +12,7 @@ import com.example.zeitgeist.data.WatchListViewModelFactory
 import com.example.zeitgeist.ui.screens.WatchListScreen
 import com.example.zeitgeist.ui.theme.ZeitgeistTheme
 import com.example.zeitgeist.ui.viewmodels.WatchListViewModel
+import androidx.compose.runtime.collectAsState
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,12 +27,11 @@ class MainActivity : ComponentActivity() {
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     WatchListScreen(
-                        watches = TODO(),
-                        showAddDialog = TODO(),
-                        onAddClick = TODO(),
-                        onDismissDialog = TODO(),
-                        onConfirmAdd = TODO(),
-                        modifier = TODO()
+                        modifier = Modifier,
+                        watches = watchListViewModel.watches.collectAsState().value,
+                        showAddDialog = watchListViewModel.showAddDialog.collectAsState().value,
+                        onAddClick = { watchListViewModel.openAddDialog() },
+                        onDismissDialog = { watchListViewModel.closeAddDialog() }
                     )
                 }
             }
