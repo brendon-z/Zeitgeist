@@ -56,6 +56,7 @@ fun AddWatchDialog(
             TextButton(
                 onClick = {
                     onConfirmAdd(Watch(brand = brand, modelName = name, reference = reference))
+                    onDismissDialog()
                 }
             ) {
                 Text("Add")

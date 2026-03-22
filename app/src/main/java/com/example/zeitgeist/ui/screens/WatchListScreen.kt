@@ -29,6 +29,7 @@ fun WatchListScreen(
     watches: List<Watch>,
     showAddDialog: Boolean,
     onAddClick: () -> Unit,
+    onConfirmAddDialog: (Watch) -> Unit,
     onDismissDialog: () -> Unit
 ) {
     Scaffold(
@@ -65,8 +66,9 @@ fun WatchListScreen(
 
     if (showAddDialog) {
         AddWatchDialog(
-            onDismissDialog = onDismissDialog
-        ) { }
+            onDismissDialog = onDismissDialog,
+            onConfirmAdd = onConfirmAddDialog
+        )
     }
 }
 
@@ -78,7 +80,8 @@ fun WatchListPreviewNoAddDialog() {
             watches = emptyList(),
             showAddDialog = false,
             onAddClick = {},
-            onDismissDialog = {}
+            onDismissDialog = {},
+            onConfirmAddDialog = {}
         )
     }
 }
@@ -91,7 +94,8 @@ fun WatchListPreviewShowAddDialog() {
             watches = emptyList(),
             showAddDialog = true,
             onAddClick = {},
-            onDismissDialog = {}
+            onDismissDialog = {},
+            onConfirmAddDialog = {}
         )
     }
 }
