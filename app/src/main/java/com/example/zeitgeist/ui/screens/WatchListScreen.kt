@@ -34,6 +34,7 @@ fun WatchListScreen(
     watches: List<Watch>,
     showAddDialog: Boolean,
     onAddClick: () -> Unit,
+    onRemoveClick: (String) -> Unit,
     onConfirmAddDialog: (Watch) -> Unit,
     onDismissDialog: () -> Unit
 ) {
@@ -51,8 +52,7 @@ fun WatchListScreen(
                     Icon(Icons.Default.Add, contentDescription = "Add watch")
                 }
             }
-        },
-        modifier = modifier.padding(10.dp)
+        }, modifier = modifier.padding(10.dp)
     ) { padding ->
         val snapState = rememberLazyListState()
         val flingBehavior = rememberSnapFlingBehavior(lazyListState = snapState)
@@ -70,20 +70,23 @@ fun WatchListScreen(
             if (watches.isEmpty()) {
                 item {
                     Box(
-                        modifier = modifier.fillParentMaxSize(),
-                        contentAlignment = Alignment.Center
+                        modifier = modifier.fillParentMaxSize(), contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = "No watches yet. Add some?",
                             textAlign = TextAlign.Center,
-                            modifier = modifier
-                                .alpha(0.5f)
+                            modifier = modifier.alpha(0.5f)
                         )
                     }
                 }
             } else {
                 items(watches) { watch ->
-                    WatchListItem(watch, Modifier.fillParentMaxWidth(), context)
+                    WatchListItem(
+                        watch,
+                        Modifier.fillParentMaxWidth(),
+                        onRemoveClick = onRemoveClick,
+                        context = context
+                    )
                 }
             }
         }
@@ -91,9 +94,7 @@ fun WatchListScreen(
 
     if (showAddDialog) {
         AddWatchDialog(
-            onDismissDialog = onDismissDialog,
-            onConfirmAdd = onConfirmAddDialog,
-            context = context
+            onDismissDialog = onDismissDialog, onConfirmAdd = onConfirmAddDialog, context = context
         )
     }
 }
@@ -107,7 +108,8 @@ fun WatchListPreviewNoWatches() {
             showAddDialog = false,
             onAddClick = {},
             onDismissDialog = {},
-            onConfirmAddDialog = {}
+            onConfirmAddDialog = {},
+            onRemoveClick = {},
         )
     }
 }
@@ -127,8 +129,8 @@ fun WatchListPreviewWithWatches() {
             showAddDialog = false,
             onAddClick = {},
             onDismissDialog = {},
-            onConfirmAddDialog = {}
-        )
+            onConfirmAddDialog = {},
+            onRemoveClick = {})
     }
 }
 
@@ -142,7 +144,8 @@ fun WatchListPreviewShowAddDialog() {
             showAddDialog = true,
             onAddClick = {},
             onDismissDialog = {},
-            onConfirmAddDialog = {}
+            onConfirmAddDialog = {},
+            onRemoveClick = {}
         )
     }
 }

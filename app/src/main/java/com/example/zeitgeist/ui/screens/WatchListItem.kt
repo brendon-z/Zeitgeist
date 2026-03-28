@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DeleteOutline
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -34,19 +39,20 @@ import java.io.File
 @Composable
 fun WatchListItem(
     watch: Watch, modifier: Modifier = Modifier,
+    onRemoveClick: (String) -> Unit,
     context: Context
 ) {
     Box(
-        contentAlignment = Alignment.Center,
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
             .background(Color.Gray.copy(alpha = 0.3f))
-            .padding(30.dp)
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(30.dp)
         ) {
-            // Watch image or placeholder if not available
             AsyncImage(
                 model = remember(watch.imagePath) {
                     if (watch.imagePath == Watch.NO_IMAGE) {
@@ -66,7 +72,6 @@ fun WatchListItem(
             )
             Spacer(modifier = Modifier.height(30.dp))
 
-            // Watch brand and model
             Text(
                 text = "${watch.brand} ${watch.modelName}",
                 maxLines = 1,
@@ -75,14 +80,24 @@ fun WatchListItem(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // Watch reference if available, if not empty string
             Text(
-                text = if (watch.reference != null) "Reference ${watch.reference}" else "",
+                text = if (watch.reference != null) "Reference ${watch.reference}" else " ",
                 maxLines = 1,
                 autoSize = TextAutoSize.StepBased(maxFontSize = 15.sp),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
+        }
+
+        Button(
+            onClick = { onRemoveClick(watch.id) },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(8.dp),
+            shape = RoundedCornerShape(12.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
+        ) {
+            Icon(Icons.Default.DeleteOutline, contentDescription = "Delete watch")
         }
     }
 }
@@ -90,9 +105,10 @@ fun WatchListItem(
 @Preview(showBackground = true)
 @Composable
 fun PreviewWatchListItem() {
-    ZeitgeistTheme() {
+    ZeitgeistTheme {
         WatchListItem(
             watch = Watch("1", "Alpinist", "Seiko", "123abc"),
+            onRemoveClick = {},
             context = LocalContext.current
         )
     }
@@ -101,10 +117,12 @@ fun PreviewWatchListItem() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewWatchListItemNoReference() {
-    ZeitgeistTheme() {
+    ZeitgeistTheme {
         WatchListItem(
             watch = Watch(
-                "1", "Alpinist", "Seiko", null),
+                "1", "Alpinist", "Seiko", null
+            ),
+            onRemoveClick = {},
             context = LocalContext.current
         )
     }

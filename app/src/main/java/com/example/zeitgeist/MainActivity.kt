@@ -32,7 +32,8 @@ class MainActivity : ComponentActivity() {
                         showAddDialog = watchListViewModel.showAddDialog.collectAsState().value,
                         onAddClick = { watchListViewModel.openAddDialog() },
                         onDismissDialog = { watchListViewModel.closeAddDialog() },
-                        onConfirmAddDialog = watchListViewModel::addWatch
+                        onConfirmAddDialog = watchListViewModel::addWatch,
+                        onRemoveClick = {watchListViewModel.removeWatch(it)}
                     )
                 }
             }
