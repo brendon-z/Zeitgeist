@@ -46,6 +46,7 @@ fun WatchListItem(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()
         ) {
+            // Watch image or placeholder if not available
             AsyncImage(
                 model = remember(watch.imagePath) {
                     if (watch.imagePath == Watch.NO_IMAGE) {
@@ -65,6 +66,7 @@ fun WatchListItem(
             )
             Spacer(modifier = Modifier.height(30.dp))
 
+            // Watch brand and model
             Text(
                 text = "${watch.brand} ${watch.modelName}",
                 maxLines = 1,
@@ -73,7 +75,14 @@ fun WatchListItem(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            Text(text = if (watch.reference != null) "Reference ${watch.reference}" else "")
+            // Watch reference if available, if not empty string
+            Text(
+                text = if (watch.reference != null) "Reference ${watch.reference}" else "",
+                maxLines = 1,
+                autoSize = TextAutoSize.StepBased(maxFontSize = 15.sp),
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }
