@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,13 +32,13 @@ fun WatchListScreen(
     modifier: Modifier = Modifier,
     watches: List<Watch>,
     showAddDialog: Boolean,
+    showRemoveDialog: Boolean,
     onAddClick: () -> Unit,
     onRemoveClick: (String) -> Unit,
     onConfirmAddDialog: (Watch) -> Unit,
-    onDismissDialog: () -> Unit
+    onDismissAddDialog: () -> Unit,
+    onConfirmRemoveDialog: () -> Unit,
 ) {
-    val context = LocalContext.current
-
     Scaffold(
         bottomBar = {
             Box(contentAlignment = Alignment.Center, modifier = modifier.fillMaxWidth()) {
@@ -85,7 +84,6 @@ fun WatchListScreen(
                         watch,
                         Modifier.fillParentMaxWidth(),
                         onRemoveClick = onRemoveClick,
-                        context = context
                     )
                 }
             }
@@ -94,7 +92,14 @@ fun WatchListScreen(
 
     if (showAddDialog) {
         AddWatchDialog(
-            onDismissDialog = onDismissDialog, onConfirmAdd = onConfirmAddDialog, context = context
+            onDismissDialog = onDismissAddDialog,
+            onConfirmAdd = onConfirmAddDialog
+        )
+    }
+
+    if (showRemoveDialog) {
+        RemoveWatchDialog(
+            onRemoveConfirm = onConfirmRemoveDialog
         )
     }
 }
@@ -107,9 +112,11 @@ fun WatchListPreviewNoWatches() {
             watches = emptyList(),
             showAddDialog = false,
             onAddClick = {},
-            onDismissDialog = {},
-            onConfirmAddDialog = {},
             onRemoveClick = {},
+            onConfirmAddDialog = {},
+            onDismissAddDialog = {},
+            onConfirmRemoveDialog = {},
+            showRemoveDialog = false,
         )
     }
 }
@@ -128,9 +135,12 @@ fun WatchListPreviewWithWatches() {
             ),
             showAddDialog = false,
             onAddClick = {},
-            onDismissDialog = {},
+            onRemoveClick = {},
             onConfirmAddDialog = {},
-            onRemoveClick = {})
+            onDismissAddDialog = {},
+            onConfirmRemoveDialog = {},
+            showRemoveDialog = false
+        )
     }
 }
 
@@ -143,9 +153,11 @@ fun WatchListPreviewShowAddDialog() {
             watches = emptyList(),
             showAddDialog = true,
             onAddClick = {},
-            onDismissDialog = {},
+            onRemoveClick = {},
             onConfirmAddDialog = {},
-            onRemoveClick = {}
+            onDismissAddDialog = {},
+            onConfirmRemoveDialog = {},
+            showRemoveDialog = false
         )
     }
 }

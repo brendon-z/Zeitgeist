@@ -1,6 +1,5 @@
 package com.example.zeitgeist.ui.screens
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -40,7 +39,6 @@ import java.io.File
 fun WatchListItem(
     watch: Watch, modifier: Modifier = Modifier,
     onRemoveClick: (String) -> Unit,
-    context: Context
 ) {
     Box(
         modifier = modifier
@@ -53,6 +51,7 @@ fun WatchListItem(
                 .fillMaxWidth()
                 .padding(30.dp)
         ) {
+            val context = LocalContext.current
             AsyncImage(
                 model = remember(watch.imagePath) {
                     if (watch.imagePath == Watch.NO_IMAGE) {
@@ -99,6 +98,7 @@ fun WatchListItem(
         ) {
             Icon(Icons.Default.DeleteOutline, contentDescription = "Delete watch")
         }
+
     }
 }
 
@@ -109,7 +109,6 @@ fun PreviewWatchListItem() {
         WatchListItem(
             watch = Watch("1", "Alpinist", "Seiko", "123abc"),
             onRemoveClick = {},
-            context = LocalContext.current
         )
     }
 }
@@ -123,7 +122,6 @@ fun PreviewWatchListItemNoReference() {
                 "1", "Alpinist", "Seiko", null
             ),
             onRemoveClick = {},
-            context = LocalContext.current
         )
     }
 }

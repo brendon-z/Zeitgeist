@@ -30,10 +30,12 @@ class MainActivity : ComponentActivity() {
                         modifier = Modifier,
                         watches = watchListViewModel.watches.collectAsState().value,
                         showAddDialog = watchListViewModel.showAddDialog.collectAsState().value,
+                        showRemoveDialog = watchListViewModel.watchToRemove.collectAsState().value != null,
                         onAddClick = { watchListViewModel.openAddDialog() },
-                        onDismissDialog = { watchListViewModel.closeAddDialog() },
+                        onDismissAddDialog = { watchListViewModel.closeAddDialog() },
                         onConfirmAddDialog = watchListViewModel::addWatch,
-                        onRemoveClick = {watchListViewModel.removeWatch(it)}
+                        onRemoveClick = watchListViewModel::openRemoveDialog,
+                        onConfirmRemoveDialog = watchListViewModel::confirmRemove,
                     )
                 }
             }

@@ -1,6 +1,5 @@
 package com.example.zeitgeist.ui.screens
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -46,12 +45,12 @@ import java.util.UUID
 fun AddWatchDialog(
     onDismissDialog: () -> Unit,
     onConfirmAdd: (Watch) -> Unit,
-    context: Context
 ) {
     var brand by remember { mutableStateOf("") }
     var name by remember { mutableStateOf("") }
     var reference by remember { mutableStateOf<String?>(null) }
     var imagePath by remember { mutableStateOf(Watch.NO_IMAGE) }
+    val context = LocalContext.current
 
     val pickImage = rememberLauncherForActivityResult(
         ActivityResultContracts.GetContent()
@@ -167,7 +166,6 @@ fun AddWatchDialogPreview() {
     ZeitgeistTheme {
         AddWatchDialog(
             {}, {},
-            context = LocalContext.current
         )
     }
 }
