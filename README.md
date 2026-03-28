@@ -1,9 +1,13 @@
+<table>
+<tr>
+<td>
+
 # Zeitgeist
 Zeitgeist is a WIP Android app for you to track your watch wearing habits.
 
 ## Initial roadmap
 - [X] Basic dashboard to display your current watch rotation
-- [X] Ability to add and remove custom-defined watches from your rotation\
+- [X] Ability to add and remove custom-defined watches from your rotation
 - [ ] Ability to edit a watch's details
 - [ ] Basic stats about your watch wearing, such as number of wears, favourite watch and simple graphs
 - [ ] Exporting watch wearing stats into spreadsheet formats
@@ -13,3 +17,13 @@ Zeitgeist is a WIP Android app for you to track your watch wearing habits.
       
 ## Would be cool to implement
 - [ ] Image recognition of watches in a photo so you can just take a photo of your watch to add it to your collection
+<br>
+
+</td>
+<td>
+
+<img width="270" height="600" alt="Screenshot" src="https://github.com/user-attachments/assets/671e405a-d536-479c-b50b-16b20d714f90" />
+
+</td>
+</tr>
+</table>
