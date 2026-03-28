@@ -1,12 +1,15 @@
 package com.example.zeitgeist.ui.screens
 
+import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -18,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.zeitgeist.model.Watch
@@ -45,20 +49,38 @@ fun WatchListScreen(
                 }
             }
         },
-        modifier = modifier
+        modifier = modifier.padding(10.dp)
     ) { padding ->
-        LazyColumn(
+        val snapState = rememberLazyListState()
+        val flingBehavior = rememberSnapFlingBehavior(lazyListState = snapState)
+
+        LazyRow(
+            state = snapState,
+            flingBehavior = flingBehavior,
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 12.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
             modifier = modifier
                 .fillMaxSize()
-                .padding(padding),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .padding(padding)
         ) {
             if (watches.isEmpty()) {
                 item {
-                    Box(modifier = modifier, contentAlignment = Alignment.Center) {
-                        Text(text = "No watches yet. Add some?", modifier = modifier.alpha(0.5f))
+                    Box(
+                        modifier = modifier.fillParentMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "No watches yet. Add some?",
+                            textAlign = TextAlign.Center,
+                            modifier = modifier
+                                .alpha(0.5f)
+                        )
                     }
+                }
+            } else {
+                items(watches) { watch ->
+                    WatchListItem(watch, Modifier.fillParentMaxWidth())
                 }
             }
         }
@@ -74,7 +96,7 @@ fun WatchListScreen(
 
 @Preview(showBackground = true)
 @Composable
-fun WatchListPreviewNoAddDialog() {
+fun WatchListPreviewNoWatches() {
     ZeitgeistTheme {
         WatchListScreen(
             watches = emptyList(),
@@ -85,6 +107,27 @@ fun WatchListPreviewNoAddDialog() {
         )
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun WatchListPreviewWithWatches() {
+    ZeitgeistTheme {
+        WatchListScreen(
+            watches = listOf(
+                Watch("1", "Alpinist", "Seiko", "123abc"),
+                Watch("2", "Aqua Terra", "Omega", "123abc"),
+                Watch("3", "Submariner", "Rolex", "123abc"),
+                Watch("4", "Navitimer", "Breitling", "123abc"),
+                Watch("5", "Snowflake", "Grand Seiko", "123abc")
+            ),
+            showAddDialog = false,
+            onAddClick = {},
+            onDismissDialog = {},
+            onConfirmAddDialog = {}
+        )
+    }
+}
+
 
 @Preview(showBackground = true)
 @Composable
