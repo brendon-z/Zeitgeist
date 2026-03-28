@@ -1,6 +1,6 @@
 package com.example.zeitgeist.ui.screens
 
-import androidx.compose.foundation.Image
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,23 +13,28 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
 import com.example.zeitgeist.R
 import com.example.zeitgeist.model.Watch
 import com.example.zeitgeist.ui.theme.ZeitgeistTheme
+import java.io.File
 
 @Composable
 fun WatchListItem(
-    watch: Watch, modifier: Modifier = Modifier
+    watch: Watch, modifier: Modifier = Modifier,
+    context: Context
 ) {
     Box(
         contentAlignment = Alignment.Center,
@@ -41,18 +46,24 @@ fun WatchListItem(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.placeholder_watch),
-                contentDescription = "",
+            AsyncImage(
+                model = remember(watch.imagePath) {
+                    if (watch.imagePath == Watch.NO_IMAGE) {
+                        R.drawable.placeholder_watch
+                    } else {
+                        File(context.filesDir, watch.imagePath)
+                    }
+                },
+                contentDescription = "${watch.brand} ${watch.modelName}",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
-                    .clip(RoundedCornerShape(12.dp))
+                    .clip(RoundedCornerShape(12.dp)),
+                placeholder = painterResource(R.drawable.placeholder_watch),
+                error = painterResource(R.drawable.placeholder_watch)
             )
-
             Spacer(modifier = Modifier.height(30.dp))
-
 
             Text(
                 text = "${watch.brand} ${watch.modelName}",
@@ -62,9 +73,7 @@ fun WatchListItem(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            if (watch.reference != null) {
-                Text(text = "Reference ${watch.reference!!}")
-            }
+            Text(text = if (watch.reference != null) "Reference ${watch.reference}" else "")
         }
     }
 }
@@ -73,6 +82,21 @@ fun WatchListItem(
 @Composable
 fun PreviewWatchListItem() {
     ZeitgeistTheme() {
-        WatchListItem(watch = Watch("1", "Alpinist", "Seiko", "123abc"))
+        WatchListItem(
+            watch = Watch("1", "Alpinist", "Seiko", "123abc"),
+            context = LocalContext.current
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewWatchListItemNoReference() {
+    ZeitgeistTheme() {
+        WatchListItem(
+            watch = Watch(
+                "1", "Alpinist", "Seiko", null),
+            context = LocalContext.current
+        )
     }
 }

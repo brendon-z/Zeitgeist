@@ -56,6 +56,8 @@ dependencies {
     implementation("androidx.datastore:datastore:1.1.4")
     implementation(libs.androidx.material3)
     implementation(libs.androidx.compose.material)
+    implementation("io.coil-kt.coil3:coil-compose:3.4.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.4.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

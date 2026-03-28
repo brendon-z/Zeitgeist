@@ -9,6 +9,10 @@ data class Watch(
     var modelName: String,
     var brand: String,
     var reference: String?,
+    var imagePath: String = NO_IMAGE
 ) {
+    companion object {
+        const val NO_IMAGE = "placeholder"
+    }
 
 }
