@@ -20,15 +20,17 @@ class WatchListViewModel(val repository: WatchListRepository) : ViewModel() {
 
     private val _showAddDialog = MutableStateFlow(false)
     private val _watchToRemove = MutableStateFlow<String?>(null)
+    private val _watchToEdit = MutableStateFlow<Watch?>(null)
 
     val showAddDialog: StateFlow<Boolean> = _showAddDialog.asStateFlow()
     val watchToRemove: StateFlow<String?> = _watchToRemove.asStateFlow()
+    val watchToEdit: StateFlow<Watch?> = _watchToEdit.asStateFlow()
 
     fun addWatch(watch: Watch) {
         viewModelScope.launch { repository.addWatch(watch) }
     }
 
-    fun removeWatch(id: String) {
+    private fun removeWatch(id: String) {
         viewModelScope.launch { repository.removeWatch(id) }
     }
 
@@ -52,4 +54,18 @@ class WatchListViewModel(val repository: WatchListRepository) : ViewModel() {
     fun closeRemoveDialog() {
         _watchToRemove.value = null
     }
+
+    fun openEditDialog(watch: Watch) { _watchToEdit.value = watch }
+
+    fun closeEditDialog() { _watchToEdit.value = null }
+
+    private fun editWatch(watch: Watch) {
+        viewModelScope.launch { repository.updateWatch(watch) }
+    }
+
+    fun confirmEdit(watch: Watch) {
+        editWatch(watch)
+        closeEditDialog()
+    }
+
 }

@@ -31,11 +31,16 @@ class MainActivity : ComponentActivity() {
                         watches = watchListViewModel.watches.collectAsState().value,
                         showAddDialog = watchListViewModel.showAddDialog.collectAsState().value,
                         showRemoveDialog = watchListViewModel.watchToRemove.collectAsState().value != null,
-                        onAddClick = { watchListViewModel.openAddDialog() },
-                        onDismissAddDialog = { watchListViewModel.closeAddDialog() },
+                        watchToEdit = watchListViewModel.watchToEdit.collectAsState().value,
+                        onAddClick = watchListViewModel::openAddDialog,
+                        onDismissAddDialog = watchListViewModel::closeAddDialog,
                         onConfirmAddDialog = watchListViewModel::addWatch,
                         onRemoveClick = watchListViewModel::openRemoveDialog,
                         onConfirmRemoveDialog = watchListViewModel::confirmRemove,
+                        onDismissRemoveDialog = watchListViewModel::closeRemoveDialog,
+                        onEditClick = watchListViewModel::openEditDialog,
+                        onConfirmEditDialog = watchListViewModel::confirmEdit,
+                        onDismissEditDialog = watchListViewModel::closeEditDialog
                     )
                 }
             }

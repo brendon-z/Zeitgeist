@@ -9,20 +9,21 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun RemoveWatchDialog(
     onRemoveConfirm: () -> Unit,
+    onDismissRemoveDialog: () -> Unit,
 ) {
     AlertDialog(
         title = { Text("Remove watch?") },
         onDismissRequest = onRemoveConfirm,
         confirmButton = {
             TextButton(onClick = onRemoveConfirm) {
-                Text("No")
+                Text("Yes")
             }
         },
         dismissButton = {
             TextButton(
-                onClick = onRemoveConfirm
+                onClick = onDismissRemoveDialog
             ) {
-                Text("Yes")
+                Text("No")
             }
         }
     )
@@ -33,6 +34,7 @@ fun RemoveWatchDialog(
 @Composable
 fun PreviewRemoveWatchDialog() {
     RemoveWatchDialog(
-        onRemoveConfirm = {}
+        onRemoveConfirm = {},
+        onDismissRemoveDialog = {}
     )
 }

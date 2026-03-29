@@ -1,9 +1,11 @@
 package com.example.zeitgeist.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DeleteOutline
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -39,6 +42,7 @@ import java.io.File
 fun WatchListItem(
     watch: Watch, modifier: Modifier = Modifier,
     onRemoveClick: (String) -> Unit,
+    onEditClick: (Watch) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -88,17 +92,28 @@ fun WatchListItem(
             )
         }
 
-        Button(
-            onClick = { onRemoveClick(watch.id) },
+        Row(
             modifier = Modifier
                 .align(Alignment.TopEnd)
-                .padding(8.dp),
-            shape = RoundedCornerShape(12.dp),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
+                .padding(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            Icon(Icons.Default.DeleteOutline, contentDescription = "Delete watch")
-        }
+            Button(
+                onClick = { onEditClick(watch) },
+                shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
+            ) {
+                Icon(Icons.Default.Edit, contentDescription = "Edit watch")
+            }
+            Button(
+                onClick = { onRemoveClick(watch.id) },
+                shape = RoundedCornerShape(12.dp),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp)
+            ) {
+                Icon(Icons.Default.DeleteOutline, contentDescription = "Delete watch")
+            }
 
+        }
     }
 }
 
@@ -109,6 +124,7 @@ fun PreviewWatchListItem() {
         WatchListItem(
             watch = Watch("1", "Alpinist", "Seiko", "123abc"),
             onRemoveClick = {},
+            onEditClick = {},
         )
     }
 }
@@ -122,6 +138,7 @@ fun PreviewWatchListItemNoReference() {
                 "1", "Alpinist", "Seiko", null
             ),
             onRemoveClick = {},
+            onEditClick = {},
         )
     }
 }

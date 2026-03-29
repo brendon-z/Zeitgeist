@@ -33,11 +33,16 @@ fun WatchListScreen(
     watches: List<Watch>,
     showAddDialog: Boolean,
     showRemoveDialog: Boolean,
+    watchToEdit: Watch?,
     onAddClick: () -> Unit,
     onRemoveClick: (String) -> Unit,
+    onEditClick: (Watch) -> Unit,
     onConfirmAddDialog: (Watch) -> Unit,
     onDismissAddDialog: () -> Unit,
     onConfirmRemoveDialog: () -> Unit,
+    onDismissRemoveDialog: () -> Unit,
+    onConfirmEditDialog: (Watch) -> Unit,
+    onDismissEditDialog: () -> Unit
 ) {
     Scaffold(
         bottomBar = {
@@ -84,6 +89,7 @@ fun WatchListScreen(
                         watch,
                         Modifier.fillParentMaxWidth(),
                         onRemoveClick = onRemoveClick,
+                        onEditClick = onEditClick,
                     )
                 }
             }
@@ -99,9 +105,19 @@ fun WatchListScreen(
 
     if (showRemoveDialog) {
         RemoveWatchDialog(
-            onRemoveConfirm = onConfirmRemoveDialog
+            onRemoveConfirm = onConfirmRemoveDialog,
+            onDismissRemoveDialog = onDismissRemoveDialog
         )
     }
+
+    watchToEdit?.let {
+        EditWatchDialog(
+            watch = it,
+            onDismissDialog = onDismissEditDialog,
+            onConfirmEdit = onConfirmEditDialog
+        )
+    }
+
 }
 
 @Preview(showBackground = true)
@@ -111,12 +127,17 @@ fun WatchListPreviewNoWatches() {
         WatchListScreen(
             watches = emptyList(),
             showAddDialog = false,
+            showRemoveDialog = false,
             onAddClick = {},
             onRemoveClick = {},
             onConfirmAddDialog = {},
             onDismissAddDialog = {},
+            onDismissRemoveDialog = {},
             onConfirmRemoveDialog = {},
-            showRemoveDialog = false,
+            onEditClick = {},
+            onConfirmEditDialog = {},
+            onDismissEditDialog = {},
+            watchToEdit = null
         )
     }
 }
@@ -134,12 +155,17 @@ fun WatchListPreviewWithWatches() {
                 Watch("5", "Snowflake", "Grand Seiko", "123abc")
             ),
             showAddDialog = false,
+            showRemoveDialog = false,
             onAddClick = {},
             onRemoveClick = {},
             onConfirmAddDialog = {},
             onDismissAddDialog = {},
+            onDismissRemoveDialog = {},
             onConfirmRemoveDialog = {},
-            showRemoveDialog = false
+            onEditClick = {},
+            onConfirmEditDialog = {},
+            onDismissEditDialog = {},
+            watchToEdit = null
         )
     }
 }
@@ -152,12 +178,17 @@ fun WatchListPreviewShowAddDialog() {
         WatchListScreen(
             watches = emptyList(),
             showAddDialog = true,
+            showRemoveDialog = false,
             onAddClick = {},
             onRemoveClick = {},
             onConfirmAddDialog = {},
             onDismissAddDialog = {},
+            onDismissRemoveDialog = {},
             onConfirmRemoveDialog = {},
-            showRemoveDialog = false
+            onEditClick = {},
+            onConfirmEditDialog = {},
+            onDismissEditDialog = {},
+            watchToEdit = null
         )
     }
 }

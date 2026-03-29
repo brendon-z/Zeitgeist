@@ -23,4 +23,10 @@ class WatchListRepository(private val context: Context) {
     suspend fun removeWatch(id: String) {
         context.watchDataStore.updateData { current -> current.filter { it.id != id } }
     }
+
+    suspend fun updateWatch(watch: Watch) {
+        context.watchDataStore.updateData { current ->
+            current.map { if (it.id == watch.id) watch else it }
+        }
+    }
 }
